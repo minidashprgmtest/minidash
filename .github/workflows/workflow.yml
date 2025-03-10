@@ -13,14 +13,11 @@ jobs: # 작업 정의
       - uses: actions/github-script@v7
         with:
           script: |
-            const core = require('@actions/core'); // @actions/core 사용
-            const { context, github } = require('@actions/github'); // context와 github 객체 가져오기
-
             async function run() {
               const pull_request = context.payload.pull_request; // pull_request 객체 가져오기
 
               if (pull_request === undefined) { // pull_request가 없는 경우
-                core.info("This is not a pull request"); // info 로그로 변경
+                console.log("This is not a pull request"); //"This is not a pull request" 출력
                 return; // 종료
               }
 
@@ -33,7 +30,7 @@ jobs: # 작업 정의
                     owner: context.repo.owner, // 저장소 소유자
                     repo: context.repo.repo, // 저장소 이름
                     issue_number: pull_request.number, // PR 번호
-                    body: "해당 PR은 가이드라인을 준수하지 않았습니다. 때문에 PR을 닫도록 하겠습니다. 가이드라인을 준수해서 다시 PR 요청을 해주세요.", // 코멘트 내용
+                    body: "해당 PR은 가이드라인을 준수하지 않았습니다. 때문에 PR을 닫도록 하겠습니다. 가이드라인을 준수해서 다시 PR 요청을 해주세요.", //코멘트 내용
                   });
 
                   // PR을 닫음
@@ -44,10 +41,10 @@ jobs: # 작업 정의
                     state: "closed", // 상태를 닫힘으로 변경
                   });
                 } catch (error) {
-                  core.error("Error occurred while closing PR: " + error.message); // error 로그로 변경
+                  console.error("Error occurred while closing PR", error); // 오류 메시지 출력
                 }
               }
             }
 
             // async 함수 실행
-            run().catch((error) => core.setFailed(error.message)); // 예외 처리를 추가
+            run().catch((error) => core.setFailed(error.message)); // 예외 처리
