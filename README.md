@@ -6,7 +6,9 @@ npm install minidash
 
 ## 사용법
 ```js
-const minidash = require("minidash");
+import { checkedArr } from minidash;
+
+checkedArr([1, 2]); //true
 ```
 
 ## 기여하기
